@@ -71,6 +71,18 @@ def test_json_output(files, capsys):
     }
 
 
+def test_ascii_fallback_on_limited_encoding(files, monkeypatch):
+    import io
+    import sys
+
+    env, tpl = files("A=1", "A=")
+    out = io.TextIOWrapper(io.BytesIO(), encoding="cp1252")
+    monkeypatch.setattr(sys, "stdout", out)
+    assert main([env, tpl]) == EXIT_OK
+    out.flush()
+    assert out.buffer.getvalue().decode("cp1252").startswith("OK ")
+
+
 def test_file_not_found(tmp_path, capsys):
     assert main([str(tmp_path / "nope"), str(tmp_path / "nope2")]) == EXIT_ERROR
     assert "file not found" in capsys.readouterr().err

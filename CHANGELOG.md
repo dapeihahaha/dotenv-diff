@@ -4,6 +4,9 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Fixed
+- Crash on Windows consoles using cp1252: fall back to `OK`/`FAIL` when `✓`/`✗` can't be encoded.
+
 ## [0.1.0] - 2026-10-21
 
 ### Added
