@@ -25,6 +25,15 @@ def _color(enabled: bool):
     return paint
 
 
+def _symbols(stream) -> tuple:
+    """Use ✓/✗ when the stream can encode them, else plain ASCII (e.g. cp1252 on Windows)."""
+    try:
+        "✓✗".encode(getattr(stream, "encoding", None) or "ascii")
+        return "✓", "✗"
+    except (UnicodeEncodeError, LookupError):
+        return "OK", "FAIL"
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="dotenv-diff",
@@ -102,10 +111,11 @@ def main(argv: Optional[List[str]] = None) -> int:
         for key in keys:
             print(f"  - {key}")
 
+    ok_mark, fail_mark = _symbols(sys.stdout)
     if failed:
-        print(paint("31", f"✗ {args.env} does not match {args.template}"))
+        print(paint("31", f"{fail_mark} {args.env} does not match {args.template}"))
         return EXIT_PROBLEMS
-    print(paint("32", f"✓ {args.env} matches {args.template}"))
+    print(paint("32", f"{ok_mark} {args.env} matches {args.template}"))
     return EXIT_OK
 
 
