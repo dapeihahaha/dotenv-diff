@@ -22,3 +22,17 @@ jobs:
       - run: pytest -v
       - name: Self-check (dogfood)
         run: dotenv-diff examples/.env examples/.env.example
+
+  action:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          env: examples/.env
+          template: examples/.env.example
+          args: --strict

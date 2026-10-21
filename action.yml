@@ -1,0 +1,30 @@
+name: dotenv-diff
+description: Compare an env file against .env.example and fail on missing, empty, or (with --strict) extra variables.
+branding:
+  icon: check-square
+  color: green
+
+inputs:
+  env:
+    description: Env file to check
+    default: .env
+  template:
+    description: Template file to compare against
+    default: .env.example
+  args:
+    description: Extra CLI flags, e.g. "--strict --ignore DEBUG"
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        PYTHONPATH: ${{ github.action_path }}/src
+        ENV_FILE: ${{ inputs.env }}
+        TEMPLATE_FILE: ${{ inputs.template }}
+        EXTRA_ARGS: ${{ inputs.args }}
+      run: |
+        PY=$(command -v python3 || command -v python)
+        # EXTRA_ARGS is intentionally unquoted so it splits into separate flags.
+        "$PY" -m dotenv_diff "$ENV_FILE" "$TEMPLATE_FILE" $EXTRA_ARGS

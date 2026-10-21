@@ -1,6 +1,6 @@
 """Compare .env files against .env.example templates."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 from .diff import DiffResult, compare
 from .parser import EnvEntry, ParseError, parse_file, parse_text

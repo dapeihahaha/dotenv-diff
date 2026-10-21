@@ -47,9 +47,15 @@ Duplicate keys are always reported as a warning and never change the exit code.
 ### In CI (GitHub Actions)
 
 ```yaml
-- run: pip install git+https://github.com/dapeihahaha/dotenv-diff
-- run: dotenv-diff .env.ci .env.example --strict
+- uses: actions/checkout@v4
+- uses: dapeihahaha/dotenv-diff@v0.2.0
+  with:
+    env: .env.ci              # default: .env
+    template: .env.example    # default: .env.example
+    args: --strict            # any extra CLI flags
 ```
+
+The action needs only the Python that GitHub-hosted runners already have; nothing is installed.
 
 ### Supported syntax
 
@@ -94,3 +100,12 @@ dotenv-diff --format json   # 输出 JSON
 ```
 
 退出码：`0` 一致，`1` 发现问题，`2` 文件不存在或格式错误。
+
+在 GitHub Actions 中使用：
+
+```yaml
+- uses: dapeihahaha/dotenv-diff@v0.2.0
+  with:
+    env: .env.ci
+    args: --strict
+```

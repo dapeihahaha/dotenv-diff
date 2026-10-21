@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-21
+
+### Added
+- GitHub Action: `uses: dapeihahaha/dotenv-diff@v0.2.0` with `env`, `template`, and `args` inputs.
+
 ### Fixed
 - Crash on Windows consoles using cp1252: fall back to `OK`/`FAIL` when `✓`/`✗` can't be encoded.
 
